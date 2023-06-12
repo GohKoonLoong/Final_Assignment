@@ -13,6 +13,11 @@ dependencies:
   shared_preferences: ^2.1.1
   image_picker: ^0.8.7+5
   google_fonts: ^4.0.4
+  convex_bottom_bar: ^3.2.0
+  image_cropper: ^4.0.1
+  geolocator: ^9.0.2
+  geocoding: ^2.1.0
+  cached_network_image: ^3.2.3
 
 dev_dependencies:
   flutter_test:
