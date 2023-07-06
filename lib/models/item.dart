@@ -9,6 +9,7 @@ class Item {
   String? itemState;
   String? itemLocality;
   String? itemDate;
+  
 
   Item(
       {this.itemId,
@@ -20,7 +21,8 @@ class Item {
       this.itemLong,
       this.itemState,
       this.itemLocality,
-      this.itemDate});
+    this.itemDate,
+  });
 
   Item.fromJson(Map<String, dynamic> json) {
     itemId = json['item_id'];

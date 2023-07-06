@@ -118,10 +118,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Checkbox(
                                       value: isChecked,
                                       onChanged: (bool? value) {
-                                        saveremovepref(value!);
                                         setState(() {
-                                          isChecked = value;
+                                          isChecked = value!;
                                         });
+                                        saveremovepref(value!);
                                       }),
                                   const Flexible(
                                       child: Text('Remember me',
@@ -132,8 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(5.0)),
-                                      color: const Color.fromRGBO(
-                                          240, 230, 140, 2),
+                                      color: Colors.amber,
                                       minWidth: 100,
                                       height: 35,
                                       elevation: 10,
@@ -210,9 +209,10 @@ class _LoginScreenState extends State<LoginScreen> {
           print(jsondata);
           if (jsondata['status'] == 'success') {
             User user = User.fromJson(jsondata['data']);
+            
             ScaffoldMessenger.of(context)
                 .showSnackBar(const SnackBar(content: Text("Login Success")));
-            Navigator.push(
+            Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (content) => MainScreen(
@@ -236,10 +236,10 @@ class _LoginScreenState extends State<LoginScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (value) {
-      if (formKey.currentState!.validate()) {
-        isChecked = true;
-        return;
-      }
+      // if (formKey.currentState!.validate()) {
+      //   isChecked = true;
+      //   return;
+      // }
       await prefs.setString('email', email);
       await prefs.setString('password', password);
       await prefs.setBool('checkbox', value);
