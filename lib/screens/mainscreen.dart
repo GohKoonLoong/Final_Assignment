@@ -1,11 +1,9 @@
 import 'package:barterlt_app/models/user.dart';
-import 'package:barterlt_app/screens/homescreen.dart';
 import 'package:barterlt_app/screens/myitemscreen.dart';
-import 'package:barterlt_app/screens/newitemscreen.dart';
+import 'package:barterlt_app/screens/homescreen.dart';
 import 'package:barterlt_app/screens/profilescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-
 
 class MainScreen extends StatefulWidget {
   final User user;
@@ -24,6 +22,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     print(widget.user.name);
+    print(widget.user.id);
     print("Mainscreen");
     tabchildren = [
       HomeScreen(
@@ -37,6 +36,7 @@ class _MainScreenState extends State<MainScreen> {
       )
     ];
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,9 +53,9 @@ class _MainScreenState extends State<MainScreen> {
                 title: "Home"),
             TabItem(
                 icon: Icon(
-                  Icons.shopping_cart,
+                  Icons.add,
                 ),
-                title: "Items"),
+                title: "Add"),
             TabItem(
                 icon: Icon(
                   Icons.person,

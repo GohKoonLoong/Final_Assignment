@@ -23,6 +23,7 @@ class _MyItemScreenState extends State<MyItemScreen> {
   int numberofresult = 0;
   late List<Widget> tabchildren;
   String maintitle = "Add Item";
+  String noData = "noData";
   List<Item> itemList = <Item>[];
   var color;
 
@@ -54,6 +55,7 @@ class _MyItemScreenState extends State<MyItemScreen> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(240, 230, 140, 2),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           maintitle,
           style:
@@ -69,15 +71,15 @@ class _MyItemScreenState extends State<MyItemScreen> {
                 child: Text("No Data"),
               )
             : Column(children: [
-                // Container(
-                //   height: 24,
-                //   color: const Color.fromRGBO(240, 230, 140, 2),
-                //   alignment: Alignment.center,
-                //   child: Text(
-                //     "$numberofresult Item Found",
-                //     style: const TextStyle(color: Colors.red, fontSize: 18),
-                //   ),
-                // ),
+                Container(
+                  height: 24,
+                  color: Theme.of(context).colorScheme.primary,
+                  alignment: Alignment.center,
+                  child: Text(
+                    "$numberofresult Items Found",
+                    style: const TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ),
                 SizedBox(
                   height: 40,
                   // color: Colors.white,
@@ -127,7 +129,7 @@ class _MyItemScreenState extends State<MyItemScreen> {
                                     width: screenWidth,
                                     fit: BoxFit.cover,
                                     imageUrl:
-                                        "${MyConfig().SERVER}/barterlt/assets/items/${itemList[index].itemId}.0.png",
+                                        "${MyConfig().SERVER}/barterlt/assets/items/${itemList[index].itemId}.1.png",
                                     placeholder: (context, url) =>
                                         const LinearProgressIndicator(),
                                     errorWidget: (context, url, error) =>
@@ -148,11 +150,11 @@ class _MyItemScreenState extends State<MyItemScreen> {
                         },
                       )),
                 ),
-              ]),
+              ]),  
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            if (widget.user.id != "na") {
+            if (widget.user.id != null) {
               await Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -160,34 +162,40 @@ class _MyItemScreenState extends State<MyItemScreen> {
                             user: widget.user,
                           )));
               await refreshItems();
-            } else {}
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Please Login to Add Items")));
+            }
           },
-          child: const Icon(Icons.add
-          )),
+          child: const Icon(Icons.add)),
     );
   }
 
   Future<void> loadItems(int pg) async {
-    http.post(Uri.parse("${MyConfig().SERVER}/barterlt/php/load_item.php"),
-        body: {
-          "userid": widget.user.id,
-          "pageno": pg.toString()
-        }).then((response) {
-      itemList.clear();
-      if (response.statusCode == 200) {
-        var jsondata = jsonDecode(response.body);
-        if (jsondata['status'] == "success") {
-          numofpage = int.parse(jsondata['numofpage']); //get number of pages
-          numberofresult = int.parse(jsondata['numberofresult']);
-          print(numberofresult);
-          var extractdata = jsondata['data'];
-          extractdata['items'].forEach((v) {
-            itemList.add(Item.fromJson(v));
-          });
-          print(itemList[0].itemName);
+    if (widget.user.id != null) {
+      http.post(Uri.parse("${MyConfig().SERVER}/barterlt/php/load_item.php"),
+          body: {
+            "userid": widget.user.id,
+            "pageno": pg.toString()
+          }).then((response) {
+        itemList.clear();
+        if (response.statusCode == 200) {
+          var jsondata = jsonDecode(response.body);
+          if (jsondata['status'] == "success") {
+            numofpage = int.parse(jsondata['numofpage']); //get number of pages
+            numberofresult = int.parse(jsondata['numberofresult']);
+            print(numberofresult);
+            var extractdata = jsondata['data'];
+            extractdata['items'].forEach((v) {
+              itemList.add(Item.fromJson(v));
+            });
+            print(itemList[0].userId);
+          }
+          setState(() {});
         }
-        setState(() {});
-      }
-    });
+      });
+    } else {
+      return;
+    }
   }
 }

@@ -32,11 +32,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 image: DecorationImage(
                     image: AssetImage("assets/images/background.png"))),
           ),
-          Padding(
-              padding: const EdgeInsets.fromLTRB(0, 60, 0, 20),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 60, 0, 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
                     "Barterlt",
                     style: TextStyle(

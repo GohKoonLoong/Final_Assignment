@@ -9,7 +9,9 @@ class Item {
   String? itemState;
   String? itemLocality;
   String? itemDate;
-  
+  String? marketValue;
+  String? itemInterested;
+  String? numofimages;
 
   Item(
       {this.itemId,
@@ -21,8 +23,10 @@ class Item {
       this.itemLong,
       this.itemState,
       this.itemLocality,
-    this.itemDate,
-  });
+      this.itemDate,
+      this.marketValue,
+      this.itemInterested,
+      this.numofimages});
 
   Item.fromJson(Map<String, dynamic> json) {
     itemId = json['item_id'];
@@ -35,6 +39,9 @@ class Item {
     itemState = json['item_state'];
     itemLocality = json['item_locality'];
     itemDate = json['item_date'];
+    marketValue = json['market_value'];
+    itemInterested = json['item_interested'];
+    numofimages = json['images_num'];
   }
 
   Map<String, dynamic> toJson() {
@@ -49,6 +56,9 @@ class Item {
     data['item_state'] = itemState;
     data['item_locality'] = itemLocality;
     data['item_date'] = itemDate;
+    data['market_value'] = marketValue;
+    data['item_interested'] = itemInterested;
+    data['images_num'] = numofimages;
     return data;
   }
 }

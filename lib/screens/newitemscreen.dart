@@ -8,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:http/http.dart' as http;
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class NewItemScreen extends StatefulWidget {
   final User user;
@@ -29,18 +30,25 @@ class _NewItemScreenState extends State<NewItemScreen> {
       TextEditingController();
   final TextEditingController _prlocalEditingController =
       TextEditingController();
+  final TextEditingController _marketvalueController = TextEditingController();
+  final TextEditingController _itemInterestedController =
+      TextEditingController();
   String selectedType = "Shoes";
   List<String> itemList = [
     "Shoes",
-    "Mobile & Accessories",
-    "Home & Living",
-    "Computer & Accessories",
-    "Wallets and Bags",
-    "Sports and Outdoor",
-    "Gaming & Console",
-    "Health & Beauty",
+    "Books",
+    "Mobile",
+    "Computer",
+    "Musical",
+    "Tools",
+    "Video Games",
+    "Fashion",
     "Watches",
-    "Car"
+    "Car",
+    "Property",
+    "Furniture",
+    "Beauty & Health",
+    "Others"
   ];
   late Position _currentPosition;
 
@@ -102,6 +110,40 @@ class _NewItemScreenState extends State<NewItemScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
+                      TextFormField(
+                          textInputAction: TextInputAction.next,
+                          validator: (val) => val!.isEmpty || (val.length < 3)
+                              ? "Item name must be longer than 3"
+                              : null,
+                          onFieldSubmitted: (v) {},
+                          controller: itemnameController,
+                          keyboardType: TextInputType.text,
+                          decoration: const InputDecoration(
+                              labelText: 'Item Name',
+                              labelStyle: TextStyle(),
+                              icon: Icon(Icons.abc),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(width: 2.0),
+                              ))),
+                      TextFormField(
+                          textInputAction: TextInputAction.next,
+                          validator: (val) => val!.isEmpty
+                              ? "Item description must be longer than 10"
+                              : null,
+                          onFieldSubmitted: (v) {},
+                          maxLines: 4,
+                          controller: itemdescController,
+                          keyboardType: TextInputType.text,
+                          decoration: const InputDecoration(
+                              labelText: 'Item Description',
+                              alignLabelWithHint: true,
+                              labelStyle: TextStyle(),
+                              icon: Icon(
+                                Icons.description,
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(width: 2.0),
+                              ))),
                       Row(
                         children: [
                           const Icon(Icons.type_specimen),
@@ -110,6 +152,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                           ),
                           SizedBox(
                             height: 60,
+                            width: 140,
                             child: DropdownButton(
                               value: selectedType,
                               onChanged: (newValue) {
@@ -131,42 +174,22 @@ class _NewItemScreenState extends State<NewItemScreen> {
                           Expanded(
                             child: TextFormField(
                                 textInputAction: TextInputAction.next,
-                                validator: (val) =>
-                                    val!.isEmpty || (val.length < 3)
-                                        ? "Item name must be longer than 3"
-                                        : null,
+                                validator: (val) => val!.isEmpty
+                                    ? "Market Value must contain value"
+                                    : null,
                                 onFieldSubmitted: (v) {},
-                                controller: itemnameController,
-                                keyboardType: TextInputType.text,
+                                controller: _marketvalueController,
+                                keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
-                                    labelText: 'Item Name',
+                                    labelText: 'Market Value',
                                     labelStyle: TextStyle(),
-                                    icon: Icon(Icons.abc),
+                                    icon: Icon(Icons.money),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(width: 2.0),
                                     ))),
-                          )
+                          ),
                         ],
                       ),
-                      TextFormField(
-                          textInputAction: TextInputAction.next,
-                          validator: (val) => val!.isEmpty
-                              ? "Item description must be longer than 10"
-                              : null,
-                          onFieldSubmitted: (v) {},
-                          maxLines: 4,
-                          controller: itemdescController,
-                          keyboardType: TextInputType.text,
-                          decoration: const InputDecoration(
-                              labelText: 'Item Description',
-                              alignLabelWithHint: true,
-                              labelStyle: TextStyle(),
-                              icon: Icon(
-                                Icons.description,
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 2.0),
-                              ))),
                       Row(children: [
                         Flexible(
                           flex: 5,
@@ -207,8 +230,23 @@ class _NewItemScreenState extends State<NewItemScreen> {
                                   ))),
                         ),
                       ]),
+                      TextFormField(
+                          textInputAction: TextInputAction.next,
+                          validator: (val) => val!.isEmpty || (val.length < 3)
+                              ? "Item name must be longer than 3"
+                              : null,
+                          onFieldSubmitted: (v) {},
+                          controller: _itemInterestedController,
+                          keyboardType: TextInputType.text,
+                          decoration: const InputDecoration(
+                              labelText: 'Interested Item',
+                              labelStyle: TextStyle(),
+                              icon: Icon(LineAwesomeIcons.box),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(width: 2.0),
+                              ))),
                       const SizedBox(
-                        height: 16,
+                        height: 30,
                       ),
                       SizedBox(
                         width: screenWidth / 1.2,
@@ -218,7 +256,10 @@ class _NewItemScreenState extends State<NewItemScreen> {
                               insertDialog();
                             },
                             child: const Text("Insert Item")),
-                      )
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
                     ],
                   ),
                 ),
@@ -236,7 +277,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
       maxWidth: 800,
     );
 
-    if (pickedFileList != null) {
+    if (pickedFileList.isNotEmpty) {
       List<File> pickedImages =
           pickedFileList.map((pickedFile) => File(pickedFile.path)).toList();
       List<File>? croppedImages = await cropImages(pickedImages);
@@ -339,6 +380,9 @@ class _NewItemScreenState extends State<NewItemScreen> {
     String itemdesc = itemdescController.text;
     String state = _prstateEditingController.text;
     String locality = _prlocalEditingController.text;
+    String numofimages = selectedImages.length.toString();
+    String itemInterested = _itemInterestedController.text;
+    String marketValue = _marketvalueController.text;
 
     List<String> base64Images = [];
     for (var image in selectedImages) {
@@ -346,6 +390,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
       String base64Image = base64Encode(imageBytes);
       base64Images.add(base64Image);
     }
+    print(numofimages);
     http.post(Uri.parse("${MyConfig().SERVER}/barterlt/php/insert_item.php"),
         body: {
           "userid": widget.user.id.toString(),
@@ -356,7 +401,10 @@ class _NewItemScreenState extends State<NewItemScreen> {
           "longitude": prlong,
           "state": state,
           "locality": locality,
-          "images": jsonEncode(base64Images)
+          "images": jsonEncode(base64Images),
+          "itemInterested": itemInterested,
+          "marketValue": marketValue,
+          "numofimages": numofimages
         }).then((response) {
       if (response.statusCode == 200) {
         print(response.body);

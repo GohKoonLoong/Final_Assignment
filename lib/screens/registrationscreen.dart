@@ -34,29 +34,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor:const Color.fromRGBO(240, 230, 140, 2) ,
+      backgroundColor: const Color.fromRGBO(240, 230, 140, 2),
       appBar: AppBar(
-          title: const Text(
-            "Registration",
-            style: TextStyle(
-              fontWeight: FontWeight.bold
-            )),
+          title: const Text("Registration",
+              style: TextStyle(fontWeight: FontWeight.bold)),
           backgroundColor: const Color.fromRGBO(240, 230, 140, 2),
           foregroundColor: Theme.of(context).colorScheme.secondary,
           elevation: 0),
       body: SingleChildScrollView(
         child: Stack(
-          children:[
+          children: [
             Container(
               height: screenHeight * 0.70,
-              color:const Color.fromRGBO(240, 230, 140, 1),
+              color: const Color.fromRGBO(240, 230, 140, 1),
               margin: EdgeInsets.only(top: screenHeight / 3),
               child: Column(
                 children: [
                   Card(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(40)
-                    ),
+                        borderRadius: BorderRadius.circular(40)),
                     elevation: 10,
                     child: Container(
                       padding: const EdgeInsets.fromLTRB(25, 25, 25, 25),
@@ -65,10 +61,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         child: Column(
                           children: <Widget>[
                             const SizedBox(height: 20),
-                            const Text(                       
+                            const Text(
                               "Register New Account",
                               style: TextStyle(
-                                  fontSize: 26, 
+                                  fontSize: 26,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.red),
                             ),
@@ -92,7 +88,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.phone,
                               validator: (val) => val!.isEmpty ||
-                                      (val.length < 10) || val.contains("-")
+                                      (val.length < 10) ||
+                                      val.contains("-")
                                   ? "Equal or longer than 10 digits and no (-)"
                                   : null,
                               controller: phoneController,
@@ -140,8 +137,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         passwordVisible = !passwordVisible;
                                       });
                                     },
-                                  )
-                                ),
+                                  )),
                             ),
                             TextFormField(
                               textInputAction: TextInputAction.done,
@@ -201,7 +197,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   height: 40,
                                   elevation: 10,
                                   onPressed: registerDialog,
-                                  color:const Color.fromRGBO(240, 230, 140, 2),
+                                  color: const Color.fromRGBO(240, 230, 140, 2),
                                   child: const Text(
                                     "Register",
                                     style: TextStyle(
@@ -229,7 +225,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   child: const Text("Login here",
                                       style: TextStyle(
                                           color: Colors.red,
-                                          fontSize: 16.0, 
+                                          fontSize: 16.0,
                                           fontWeight: FontWeight.bold)),
                                 )
                               ],
@@ -256,7 +252,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       ),
     );
   }
- void registerDialog() {
+
+  void registerDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -273,36 +270,38 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text("Yes"),
-              onPressed: () {
-                Navigator.of(context).pop();
-                if (!formKey.currentState!.validate()) {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(const SnackBar(content: Text("Check your input")));
-                  return;
-                }
-                if (!isChecked) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("Please agree with terms and conditions")));
-                }
-                String pass1 = passwordController.text;
-                String pass2 = password2Controller.text;
-                if (pass2 != pass1) {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(const SnackBar(content: Text("Check your password")));
-                }
-                registerAccount();
-              }),
+                child: const Text("Yes"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  if (!formKey.currentState!.validate()) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Check your input")));
+                    return;
+                  }
+                  if (!isChecked) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content:
+                            Text("Please agree with terms and conditions")));
+                  }
+                  String pass1 = passwordController.text;
+                  String pass2 = password2Controller.text;
+                  if (pass2 != pass1) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Check your password")));
+                  }
+                  registerAccount();
+                }),
             TextButton(
-              child: const Text("No"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              }),
+                child: const Text("No"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
           ],
         );
       },
     );
   }
+
   void registerAccount() {
     String name = nameController.text;
     String email = emailController.text;
@@ -330,7 +329,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   String? validatePassword(String value) {
-    String pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$%&*~]).{8,}$';
+    String pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$%&*~]).{8,}$';
     RegExp regex = RegExp(pattern);
     if (value.isEmpty) {
       return 'Please enter password';
@@ -362,9 +362,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             textAlign: TextAlign.justify,
                             text: TextSpan(
                                 style: const TextStyle(
-                                  fontSize: 12.0,
-                                  color: Colors.black
-                                ),
+                                    fontSize: 12.0, color: Colors.black),
                                 text: eula)),
                       ))
                 ],

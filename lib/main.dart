@@ -8,7 +8,6 @@ void main() {
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
@@ -18,6 +17,7 @@ class MainApp extends StatelessWidget {
         textTheme: GoogleFonts.anticTextTheme(
           Theme.of(context).textTheme.apply()
         )),
+     
       title: 'Barterlt',
       home: const Scaffold(
         body: SplashScreen()
